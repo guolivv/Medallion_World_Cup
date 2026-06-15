@@ -9,43 +9,48 @@ from requests.exceptions import Timeout, ConnectionError, HTTPError
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-def extract_raw_data(url:str) -> list:
-    logging.info('Extração iniciada')
+def extract_raw_data(urls:list) -> None:
 
-    try:
-        response = requests.get(url)
+    for url in urls:
+        endpoint = list(url.keys())[0]
 
-        if response.raise_for_status():
-            logging.error('Erro na requisição')
-            return []
+        logging.info(f'Endpoint {endpoint} | Extração iniciada')
 
-        data = response.json()
+        try:
+            response = requests.get(list(url.values())[0])
 
-        if not data:
-           logging.warning('Nenhum dado retornado')
-           return []
-        
-        output_path = 'data/raw/worldcup_2026.json'
-        with open(output_path, 'w', encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=4)
+            if response.raise_for_status():
+                logging.error(f'Endpoint {endpoint} | Erro na requisição')
+                return []
 
-        logging.info('Extração bem sucedida!')
-        return data
+            data = response.json()
+
+            if not data:
+                logging.warning(f'Endpoint {endpoint} | Nenhum dado retornado')
+                return []
+            
+            output_path = f'data/raw/{endpoint}.json'
+            with open(output_path, 'w', encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=4)
+
+            logging.info(f'Endpoint {endpoint} | Extração bem sucedida!')
 
 
-    except Timeout:
-        logging.error('Erro: timeout')
-    except ConnectionError:
-        logging.error('Erro: ConnectionError')
-    except HTTPError as erro_http:
-        logging.error(f'Erro HTTP do servidor: {erro_http}')
-    except Exception as erro_generico:
-        logging.error(f'Erro inesperado: {erro_generico}')
-
-    print(response.status_code)
-    print(data.keys())
+        except Timeout:
+            logging.error(f'Endpoint {endpoint} | Erro: timeout')
+        except ConnectionError:
+            logging.error(f'Endpoint {endpoint} | Erro: ConnectionError')
+        except HTTPError as erro_http:
+            logging.error(f'Endpoint {endpoint} | Erro HTTP do servidor: {erro_http}')
+        except Exception as erro_generico:
+            logging.error(f'Endpoint {endpoint} | Erro inesperado: {erro_generico}')
 
 
 if __name__ == '__main__':
-    url = 'https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json'
-    data = extract_raw_data(url)
+    urls = [
+            {'worldcup':'https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json'},
+            {'squads':'https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json'},
+            {'groups':'https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.groups.json'}
+    ]
+
+    extract_raw_data(urls)
