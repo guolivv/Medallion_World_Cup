@@ -33,7 +33,8 @@ def extract_raw_data(urls:list) -> None:
             with open(output_path, 'w', encoding="utf-8") as f:
                 json.dump(data, f, ensure_ascii=False, indent=4)
 
-            logging.info(f'Endpoint {endpoint} | Extração bem sucedida!')
+            logging.info(f'Endpoint {endpoint} | Dados salvos em {output_path}')
+            logging.info(f'Endpoint {endpoint} | Extração bem sucedida')
 
 
         except Timeout:
@@ -49,8 +50,8 @@ def extract_raw_data(urls:list) -> None:
 if __name__ == '__main__':
     urls = [
             {'worldcup':'https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json'},
-            {'squads':'https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json'},
-            {'groups':'https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.groups.json'}
+            # {'squads':'https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.squads.json'},
+            # {'groups':'https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.groups.json'}
     ]
 
     extract_raw_data(urls)
