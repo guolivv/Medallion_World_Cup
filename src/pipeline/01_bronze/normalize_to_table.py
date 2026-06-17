@@ -44,7 +44,8 @@ def normalize_dynamic() -> None:
     with open(input_path_json, 'r', encoding='utf-8') as f:
         data_json = json.load(f)
 
-    df_worldcup = pd.json_normalize(data_json, record_path='matches', meta='name')
+    df_worldcup = pd.json_normalize(data_json, record_path='matches')
+    df_worldcup = df_worldcup.drop(columns='num')
     df_worldcup.to_csv('data/01_bronze/df_worldcup.csv')
     logging.info(f'Dynamic worldcup | Dados salvos em {input_path_json}')
     logging.info('Dynamic worldcup | Normalização bem sucedida')
