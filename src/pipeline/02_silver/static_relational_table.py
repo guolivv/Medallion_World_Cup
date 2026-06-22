@@ -27,7 +27,17 @@ def squads_to_players() -> None:
     df_players = pd.json_normalize(df_squads.to_dict(orient='records'), record_path='players', meta=['confederation_name', 'fifa_code', 'group'])
     df_players = df_players.rename(columns={'club.name':'club_name', 'club.country':'club_country'})
     df_players.to_csv('data/02_silver/df_players.csv', index=False)
-    
+
+
+def squads_to_teams() -> None:
+    logging.info(f'Transformação {inspect.currentframe().f_code.co_name} iniciada')
+
+    input_path = 'data/01_bronze/df_squads.csv'
+    df_squads = pd.read_csv(input_path)
+    df_teams = df_squads.drop(columns=['players', 'Unnamed: 0'])
+    df_teams.to_csv('data/02_silver/df_teams.csv', index=False)
+
 
 if __name__ == '__main__':
     squads_to_players()
+    squads_to_teams()

@@ -46,11 +46,14 @@ def normalize_dynamic() -> None:
 
     df_worldcup = pd.json_normalize(data_json, record_path='matches')
     df_worldcup = df_worldcup.drop(columns='num')
+    df_worldcup = df_worldcup.rename(columns={'score.ft':'score_ft','score.ht':'score_ht'})
+
     df_worldcup.to_csv('data/01_bronze/df_worldcup.csv')
+
     logging.info(f'Dynamic worldcup | Dados salvos em {input_path_json}')
     logging.info('Dynamic worldcup | Normalização bem sucedida')
 
 
 if __name__ == '__main__':
-    normalize_static()
+    # normalize_static()
     normalize_dynamic()
