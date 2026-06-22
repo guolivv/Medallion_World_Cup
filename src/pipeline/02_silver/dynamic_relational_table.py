@@ -35,13 +35,20 @@ def worldcup_to_goals():
     df_worldcup[['goals1', 'goals2']] = df_worldcup.apply(map_and_clean, axis=1)
     df_worldcup = df_worldcup.drop(columns='Unnamed: 0')
     df_worldcup['goals1'] = df_worldcup['goals1'].replace('"', '')
+    df_worldcup['goals2'] = df_worldcup['goals2'].replace('"', '')
 
     df_goals1 = pd.json_normalize(df_worldcup.to_dict(orient='records'), record_path='goals1', meta=['team1', 'team2', 'ground'])
     df_goals1 = df_goals1.rename(columns={'team1':'team', 'team2':'rival_team'})
     df_goals1['owngoal'] = df_goals1['owngoal'].fillna('False').astype('string')
     df_goals1['penalty'] = df_goals1['penalty'].fillna('False').astype('string')
+    df_goals1.to_csv('data/02_silver/goals1.csv', index=False)
 
-    df_goals1.to_csv('data/02_silver/goals.csv', index=False)
+    df_goals2 = pd.json_normalize(df_worldcup.to_dict(orient='records'), record_path='goals2', meta=['team1', 'team2', 'ground'])
+    df_goals2 = df_goals2.rename(columns={'team1':'team', 'team2':'rival_team'})
+    df_goals2['owngoal'] = df_goals2['owngoal'].fillna('False').astype('string')
+    df_goals2['penalty'] = df_goals2['penalty'].fillna('False').astype('string')
+    df_goals2.to_csv('data/02_silver/goals2.csv', index=False)
+    
 
 
 if __name__ == '__main__':
