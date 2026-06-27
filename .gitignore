@@ -10,7 +10,7 @@ wheels/
 .venv
 
 # Config files
-config/.env
+.env
 
 # Data files
 data/
