@@ -21,3 +21,17 @@ class DBConfig:
             )
         except KeyError as e:
             raise KeyError(f'Erro: {e}')
+        
+    
+    @classmethod
+    def from_env_readonly(cls) -> "DBConfig":
+        try:
+            return cls(
+                host=os.environ.get('DB_HOST', 'localhost'),
+                port=int(os.environ.get('DB_PORT', 5433)),
+                dbname=os.environ['POSTGRES_DB'],
+                user='readonly_user',
+                password=os.environ['READONLY_PASSWORD'],
+            )
+        except KeyError as e:
+            raise KeyError(f'Erro: {e}')

@@ -59,7 +59,9 @@ def map_diff(df:pd.DataFrame) -> pd.DataFrame:
         'mohammad mohebbi':'mohammad mohebi',
         'maxi araujo':'maximiliano araujo',
         'agustin cano':'agustin canobbio',
-        'mostafa zico':'mostafa ziko'
+        'mostafa zico':'mostafa ziko',
+        'mousa al-tamari':'musa al-taamari',
+        'stephan eustaquio':'stephen eustaquio'
     }
 
     df['name'] = df['name'].replace(dict_players)

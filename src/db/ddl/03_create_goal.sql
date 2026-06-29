@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS goal (
     team_name              VARCHAR(50) NOT NULL, 
     rival_team_name        VARCHAR(50) NOT NULL,
     ground                 VARCHAR(100),
-    CONSTRAINT chk_goals_teams_different CHECK (team_name <> rival_team_name),
+    CONSTRAINT chk_goal_team_different CHECK (team_name <> rival_team_name),
+    CONSTRAINT uq_goal_natural_key UNIQUE (name, minute, owngoal, penalty, team_name, rival_team_name, ground),
     CONSTRAINT fk_goal_team_team_name FOREIGN KEY (team_name) REFERENCES team(name),
     CONSTRAINT fk_goal_team_rival_team_name FOREIGN KEY (rival_team_name) REFERENCES team(name)
 );
